@@ -1,1 +1,41 @@
-<p>products works!</p>
+<h1 class="m-2">List of products</h1>
+<div>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Description</th>
+      <th>Promo</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    @if (products) {
+      <tbody>
+      <!--      <tr *ngFor="let p of products">-->
+      <!--        <td>{{p.name}}</td>-->
+      <!--        <td>{{p.price}}</td>-->
+      <!--        <td>{{p.description}}</td>-->
+      <!--        <td>{{p.promo}}</td>-->
+      <!--      </tr>-->
+        @for (p of products; track p.id) {
+          <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.price }}</td>
+            <td>{{ p.description }}</td>
+            @if (p.promo) {
+              <td><i class="bi bi-check text-success rounded-circle border border-success"></i></td>
+            } @else {
+              <td><i class="bi bi-x text-danger rounded-circle border border-danger"></i></td>
+            }
+            <td>
+              <button (click)="handleDelete(p.id)" class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    }
+  </table>
+</div>
