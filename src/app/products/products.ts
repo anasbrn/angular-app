@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {ProductService} from '../services/product';
+
 // import {NgForOf} from '@angular/common';
 
 @Component({
@@ -12,18 +14,32 @@ import {Component, OnInit} from '@angular/core';
 export class ProductsComponent implements OnInit {
   products: Array<any> = [];
 
-  constructor() {
+  constructor(private productService: ProductService) {
   }
 
   ngOnInit(): void {
-    this.products = [
-      {id: 1, name : "Computer", price : 6000, description : "Dell computer", promo: false},
-      {id: 2, name : "Smart phone", price : 3000, description : "Iphone", promo: true},
-      {id: 3, name : "Printer", price : 8000, description : "Wireless Printer",promo: false},
-    ];
+    this.fetchProducts();
   }
 
   handleDelete(id: number) {
-    this.products = this.products.filter(product => product.id !== id);
+    this.productService.deleteProduct(id).subscribe({
+      next: () => {
+        this.fetchProducts();
+      },
+      error: err => {
+        console.error(err)
+      }
+    });
+  }
+
+  fetchProducts(): void {
+    this.productService.getAllProducts().subscribe({
+      next: data => {
+        this.products = data;
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
   }
 }
